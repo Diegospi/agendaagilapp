@@ -1,6 +1,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import basedatosusuarios from "../utils/basedatosusuarios.json"
+
+import Swal from 'sweetalert2'
+
+
 export function Formulario() {
 
     const[verCedula,guardarCedula]=useState("")
@@ -12,11 +17,28 @@ export function Formulario() {
 
     function procesarFormulario(evento){
         //Que hago si le hacen clic al boton del formulario?
-        evento.preventDefault()
-        console.log("Le hicieron clic al boton del formulario")
+        evento.preventDefault()        
+        //console.log("Le hicieron clic al boton del formulario")
 
+        //buscamos coincidencias entre  lo que escribe el usuario en el formulario y el json de la BD
+        let busqueda=basedatosusuarios.find(function(usuario){
+            return(usuario.documento==verCedula)
+        })
+        if (busqueda==undefined) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+                footer: '<a href="#">Why do I have this issue?</a>'
+              });
+
+        } else {
         //voy a enrutar otro componente (¿Como lanzo un componente desde otro?)
         enrutador("/home")
+        }
+
+        //voy a enrutar otro componente (¿Como lanzo un componente desde otro?)
+        //enrutador("/home")
     }
 
     return (
